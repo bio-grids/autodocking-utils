@@ -24,17 +24,22 @@ ARG build_deps="\
 RUN apt-get update -y
 RUN apt-get install --yes --no-install-recommends --quiet $build_deps
 RUN apt-get upgrade -yq libstdc++6
+RUN apt-get install libssl-dev -y
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install rdkit
 
 ARG OPENBABEL_HOME=/usr/local/openbabel/3-1-1
 
-COPY --from=firesimulations/openbabel:3.1.1 ${OPENBABEL_HOME}* ${OPENBABEL_HOME}/
+COPY --from=firesimulations/openbabel:3.1.1 $OPENBABEL_HOME $OPENBABEL_HOME
+COPY --from=firesimulations/openbabel:3.1.1 /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/
 COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/openbabel/* /usr/local/lib/python3.10/site-packages/
 COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/pybel/* /usr/local/lib/python3.10/site-packages/
-COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/openbabel/* /usr/local/lib/python3.10/dist-packages/
-COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/pybel/* /usr/local/lib/python3.10/dist-packages/
+#COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/openbabel/* /usr/local/lib/python3.10/dist-packages/
+#COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/pybel/* /usr/local/lib/python3.10/dist-packages/
+
+ENV LD_LIBRARY_PATH=$OPENBABEL_HOME/lib:$LD_LIBRARY_PATH
+ENV PATH=$OPENBABEL_HOME/bin:$PATH
 
 RUN cd / && mkdir -p app
 WORKDIR /app
