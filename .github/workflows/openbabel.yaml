@@ -29,6 +29,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./openbabel
+          context: /openbabel
           push: true
           tags: ${{env.docker_repo}}:3.1.1,${{env.docker_repo}}:latest
