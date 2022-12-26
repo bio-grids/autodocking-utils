@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 SHELL ["/bin/bash", "-c"]
 
-# Install openbabel dependencies
+# Install dependencies
 ARG build_deps="\
     build-essential \
     ca-certificates \
@@ -50,7 +50,7 @@ RUN wget --quiet --no-hsts --output-document=- https://github.com/openbabel/open
 RUN mkdir -p /tmp/openbabel-openbabel-${OPENBABEL_VERSION//./-}/build
 WORKDIR /tmp/openbabel-openbabel-${OPENBABEL_DIR}/build
 
-# Install openbabel
+# Build and install openbabel
 RUN cmake \
     -W no-dev \
     -D RUN_SWIG=ON \
@@ -61,24 +61,20 @@ RUN cmake \
     ..
 RUN make -j $(nproc) && make install
 
+# Set environment variables
+ENV LD_LIBRARY_PATH=$OPENBABEL_HOME/lib:$LD_LIBRARY_PATH
+ENV PATH=$OPENBABEL_HOME/bin:$PATH
+
+# Install openbabel and pybel python libraries
+RUN pip3 install --install-option=build_ext --install-option="-I$OPENBABEL_HOME/include/openbabel3" --install-option="-L$OPENBABEL_HOME/lib" openbabel
+RUN pip3 install pybel
+
 # Clean files
 RUN cd / && rm -rf /tmp/*
 RUN apt-get purge --yes --auto-remove $build_deps
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables
-ENV LD_LIBRARY_PATH=$OPENBABEL_HOME/lib:$LD_LIBRARY_PATH
-ENV PATH=$OPENBABEL_HOME/bin:$PATH
-
 RUN cd / && mkdir -p app
 WORKDIR /app
-
-# Install pip
-RUN apt-get update
-RUN apt-get -y install python3-pip
-
-# Install openbabel and pybel
-RUN pip3 install --install-option=build_ext --install-option="-I$OPENBABEL_HOME/include/openbabel3" --install-option="-L$OPENBABEL_HOME/lib" openbabel
-RUN pip3 install pybel
 
 CMD ["/usr/bin/python3"]
