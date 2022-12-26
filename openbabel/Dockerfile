@@ -38,8 +38,6 @@ ARG build_deps="\
 RUN apt-get update -y
 RUN apt-get install --yes --no-install-recommends --quiet $build_deps
 
-SHELL ["/bin/bash", "-c"]
-
 # Arguments
 ARG OPENBABEL_VERSION=3.1.1
 ARG OPENBABEL_DIR=3-1-1
