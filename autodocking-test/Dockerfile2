@@ -1,0 +1,42 @@
+FROM python:3.10-buster
+
+# Install dependencies
+ARG build_deps="\
+    build-essential \
+    libboost-filesystem-dev \
+    libboost-iostreams-dev \
+    libboost-program-options-dev \
+    libboost-regex-dev \
+    libboost-system-dev \
+    libboost-thread-dev \
+    libboost-serialization-dev \
+    libboost-python-dev \
+    libboost-test-dev \
+    libboost-dev \
+    libcairo2-dev \
+    libeigen3-dev \
+    libxml2-dev \
+    rapidjson-dev \
+    libxml2 \
+    swig \
+    zlib1g-dev \
+    libbz2-dev"
+RUN apt-get update -y
+RUN apt-get install --yes --no-install-recommends --quiet $build_deps
+RUN apt-get upgrade -yq libstdc++6
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install rdkit
+
+ARG OPENBABEL_HOME=/usr/local/openbabel/3-1-1
+
+COPY --from=firesimulations/openbabel:3.1.1 ${OPENBABEL_HOME}* ${OPENBABEL_HOME}/
+COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/openbabel/* /usr/local/lib/python3.10/site-packages/
+COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/pybel/* /usr/local/lib/python3.10/site-packages/
+COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/openbabel/* /usr/local/lib/python3.10/dist-packages/
+COPY --from=firesimulations/openbabel:3.1.1 /usr/local/lib/python3.10/dist-packages/pybel/* /usr/local/lib/python3.10/dist-packages/
+
+RUN cd / && mkdir -p app
+WORKDIR /app
+
+CMD ["python3"]

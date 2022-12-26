@@ -34,6 +34,17 @@ services:
     networks:
       - openbabel_net
 
+  # autodocking-test2:
+  #   build:
+  #     context: autodocking-test
+  #     dockerfile: Dockerfile2
+  #   image: firesimulations/autodocking-test2:0.0.1
+  #   container_name: autodocking-test2
+  #   tty: true
+  #   stdin_open: true
+  #   networks:
+  #     - openbabel_net
+
 networks:
   openbabel_net:
     driver: bridge
