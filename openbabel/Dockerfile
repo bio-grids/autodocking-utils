@@ -73,6 +73,10 @@ ENV PATH=$OPENBABEL_HOME/bin:$PATH
 RUN cd / && mkdir -p app
 WORKDIR /app
 
+# Install pip
+RUN apt-get update
+RUN apt-get -y install python3-pip
+
 # Install openbabel and pybel
 RUN pip3 install --install-option=build_ext --install-option="-I$OPENBABEL_HOME/include/openbabel3" --install-option="-L$OPENBABEL_HOME/lib" openbabel
 RUN pip3 install pybel
