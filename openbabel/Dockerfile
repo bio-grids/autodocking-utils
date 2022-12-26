@@ -68,9 +68,9 @@ RUN pip3 install --install-option=build_ext --install-option="-I$OPENBABEL_HOME/
 RUN pip3 install pybel
 
 # Clean files
-RUN cd / && rm -rf /tmp/*
-RUN apt-get purge --yes --auto-remove $build_deps
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# RUN cd / && rm -rf /tmp/*
+# RUN apt-get purge --yes --auto-remove $build_deps
+# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN cd / && mkdir -p app
 WORKDIR /app
