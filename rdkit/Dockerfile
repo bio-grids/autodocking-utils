@@ -76,5 +76,3 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN cd / && mkdir -p app
 WORKDIR /app
-
-CMD ["/usr/bin/python3"]
