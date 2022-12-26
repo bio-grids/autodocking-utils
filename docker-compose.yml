@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  openbabel:
+    build:
+      context: openbabel
+      dockerfile: Dockerfile
+    image: firesimulations/openbabel:3.1.1
+    container_name: openbabel
+    tty: true
+    stdin_open: true
+    networks:
+      - openbabel_net
+
+  rdkit:
+    build:
+      context: rdkit
+      dockerfile: Dockerfile
+    image: firesimulations/rdkit:2022.09.3
+    container_name: rdkit
+    tty: true
+    stdin_open: true
+    networks:
+      - openbabel_net
+  
+  autodocking-test:
+    build:
+      context: autodocking-test
+      dockerfile: Dockerfile
+    image: firesimulations/autodocking-test:0.0.1
+    container_name: autodocking-test
+    tty: true
+    stdin_open: true
+    networks:
+      - openbabel_net
+
+networks:
+  openbabel_net:
+    driver: bridge
