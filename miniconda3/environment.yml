@@ -1,0 +1,20 @@
+dependencies:
+  - python >=3.9,<=3.11
+  - openbabel
+  - mgltools
+  - zlib
+  - pip
+  - numpy
+  - scipy
+  - rdkit
+  - pip:
+      - Django
+      - django-ninja
+      - django-ninja-extra
+      - django-ninja-jwt
+      - ninja-schema
+      - vina
+      - meeko
+      - biopandas
+      - py3Dmol
+      - autopep8

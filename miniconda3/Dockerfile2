@@ -1,0 +1,21 @@
+FROM continuumio/miniconda3:22.11.1
+
+SHELL ["/bin/bash", "-c"]
+
+# Install dependencies
+ARG build_deps="\
+    pdb2pqr \
+    openbabel \
+    git"
+RUN apt-get update -y
+RUN apt-get install --yes --no-install-recommends --quiet $build_deps
+
+# make conda activate command available from /bin/bash --interative shells
+RUN conda init bash
+
+RUN conda update --name base --channel defaults conda
+
+RUN conda install --name base -c conda-forge -c bioconda openbabel mgltools zlib --yes
+
+RUN cd / && mkdir -p app
+WORKDIR /app
