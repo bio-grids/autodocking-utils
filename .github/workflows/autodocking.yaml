@@ -11,7 +11,7 @@ on:
       - 'autodocking'
 
 jobs:
-  openbabel-docker:
+  autodocking-docker:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
