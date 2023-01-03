@@ -1,14 +1,14 @@
 ---
 
-name: Build and push openbabel
+name: Build and push autodocking
 
 env:
-  docker_repo: firesimulations/openbabel
+  docker_repo: firesimulations/autodocking
 
 on:
   push:
     branches:
-      - 'openbabel'
+      - 'autodocking'
 
 jobs:
   openbabel-docker:
@@ -29,6 +29,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: "{{defaultContext}}:openbabel"
+          context: "{{defaultContext}}:autodocking"
           push: true
-          tags: ${{env.docker_repo}}:3.1.1,${{env.docker_repo}}:latest
+          tags: ${{env.docker_repo}}:2023.1.1,${{env.docker_repo}}:latest
