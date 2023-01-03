@@ -21,8 +21,8 @@ RUN rm -rf /var/lib/apt/lists/*
 
 # install miniconda
 ENV MINICONDA_VERSION latest
-ENV CONDA_DIR ~/miniconda3
-WORKDIR ~/
+ENV CONDA_DIR /miniconda3
+WORKDIR /
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-$MINICONDA_VERSION-Linux-x86_64.sh -O miniconda.sh
 RUN chmod +x miniconda.sh
 RUN bash ./miniconda.sh -b -p $CONDA_DIR
@@ -38,9 +38,8 @@ RUN echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> ~/.profile
 RUN conda init bash
 
 # create a project directory inside user home
-RUN cd ~/ && mkdir app
-ENV PROJECT_DIR ~/app
-WORKDIR $PROJECT_DIR
+RUN mkdir app
+WORKDIR /app
 
 # build the conda environment
 RUN conda update --name base --channel defaults conda
