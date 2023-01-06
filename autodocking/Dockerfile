@@ -12,7 +12,7 @@ ARG build_deps="\
     bzip2 \
     curl \
     swig \
-    libxml2 libsm6 libxext6 libxrender-dev libgomp1 \
+    libxml2 libsm6 libxext6 libxrender-dev libgomp1 libgl1 \
     git"
 
 RUN apt-get update --fix-missing
