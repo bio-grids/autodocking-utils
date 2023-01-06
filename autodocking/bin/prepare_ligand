@@ -1,0 +1,89 @@
+#!/bin/sh
+
+######
+## set environment variables.
+ADS_ROOT="/opt/adfr"
+export ADS_ROOT
+
+#######
+## path to the bin directory.
+ADS_BIN="$ADS_ROOT/bin"
+export ADS_BIN
+
+#######
+## path to the extralibs directory.
+ADS_EXTRALIBS="$ADS_ROOT/lib"
+export ADS_EXTRALIBS
+
+#######
+## path to the extrainclude directory
+ADS_EXTRAINCLUDE="$ADS_ROOT/include"
+export ADS_EXTRAINCLUDE
+
+########
+## platform we run on
+ADS_ARCHOSV="$ADS_BIN/archosv"
+export ADS_ARCHOSV
+
+########
+## add the path to the directory holding the python interpreter to your path
+PATH="$ADS_BIN:$PATH"
+export PATH
+
+# Open Babel formats, plugins directory:
+BABEL2_LIBDIR="$ADS_ROOT/lib/openbabel/2.4.1"
+export BABEL2_LIBDIR
+BABEL2_DATADIR="$ADS_ROOT/share/openbabel/2.4.1"
+export BABEL2_DATADIR
+
+# set path so we get the versions of command we expect
+originalpath="$PATH"
+
+# set the LD_LIBRARY PATH
+LD_LIBRARY_PATH="$ADS_EXTRALIBS${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH
+
+# error checking
+p0="/usr/lib/libGL.so.1"
+p1="/usr/X11R6/lib/libGL.so.1"
+if [ -f "$p0" -a -f "$p1" ]; then
+  ls0=$(ls -Ll "$p0" | sed 's,/.*,,')
+  ls1=$(ls -Ll "$p1" | sed 's,/.*,,')
+  if [ "$ls0" != "$ls1" ]; then
+    echo "OpenGL misconfiguration detected."
+    echo "Please reinstall graphics driver."
+    #exit 1
+  fi
+fi
+
+# get the flags we want to pass to python
+pyflags=""
+for i in "$@"; do
+  case $i in
+  --opt)
+    pyflags="$pyflags${pyflags:+ }-OO"
+    # remove '--opt' from list of args
+    shift
+    ;;
+  esac
+done
+
+# deduce which python to use
+if test -x "$ADS_BIN/python2.7"; then
+  # using adfr distributed version of python, don't use any python
+  # environment variables, especially PYTHONHOME and PYTHONPATH
+  unset PYTHONHOME
+  PYTHONHOME="$ADS_ROOT"
+  export PYTHONHOME
+  PYTHONPATH="$ADS_ROOT/CCSBpckgs"
+  export PYTHONPATH
+  python="$ADS_BIN/python"
+else
+  PATH="$originalpath"
+  python="python"
+fi
+if test $# -gt 0; then
+  exec $python $pyflags $ADS_ROOT/CCSBpckgs/AutoDockTools/Utilities24/prepare_ligand4.py "$@"
+else
+  exec $python $pyflags $ADS_ROOT/CCSBpckgs/AutoDockTools/Utilities24/prepare_ligand4.py
+fi
