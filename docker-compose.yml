@@ -32,7 +32,7 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - ./autodocking/bin:/app/bin
+      - ./autodocking/bin:/ubin
     networks:
       - openbabel_net
   
