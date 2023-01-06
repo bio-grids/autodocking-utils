@@ -12,6 +12,7 @@ ARG build_deps="\
     bzip2 \
     curl \
     swig \
+    libxml2 libsm6 libxext6 libxrender-dev libgomp1 \
     git"
 
 RUN apt-get update --fix-missing
@@ -37,29 +38,43 @@ RUN echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> ~/.profile
 # make conda activate command available from /bin/bash --interative shells
 RUN conda init bash
 
-# create a project directory inside user home
-RUN mkdir app
-WORKDIR /app
+WORKDIR /tmp
+RUN curl -SL https://ccsb.scripps.edu/adfr/download/1038 | tar -zx; \
+    cd ADFRsuite_x86_64Linux_1.0; ./install.sh -d /opt/adfr/ -c 1 -l
+
+ENV PATH=$PATH:/opt/adfr/bin/
 
 # build the conda environment
 RUN conda update --name base --channel defaults conda
 RUN conda install --name base --channel conda-forge mamba
 RUN conda config --prepend channels bioconda
 RUN conda config --prepend channels conda-forge
-RUN mamba install \
+RUN mamba install --yes \
     openbabel \
     mgltools \
     zlib \
     pip \
     numpy \
+    pandas \
     scipy \
     rdkit \
     boost-cpp \
     sphinx \
     sphinx_rtd_theme \
+    fpocket \
+    pdbfixer \
+    pymol-open-source \
     jupyterlab
 RUN conda clean --all --yes
 
-COPY requirements.txt /tmp/requirements.txt
+COPY requirements.txt requirements.txt
 
-RUN pip install -r /tmp/requirements.txt
+RUN pip install -r requirements.txt
+
+RUN rm -rf /tmp/*
+
+# create a project directory inside user home
+RUN mkdir app
+WORKDIR /app
+
+COPY bin/ bin
