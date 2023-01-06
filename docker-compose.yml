@@ -33,6 +33,13 @@ services:
     stdin_open: true
     volumes:
       - ./autodocking/bin:/ubin
+      - ./autodocking/specs.json:/tmp/specs.json
+      - ./autodocking/specs.txt:/tmp/specs.txt
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
     networks:
       - openbabel_net
   
