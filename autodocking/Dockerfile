@@ -71,6 +71,10 @@ COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
+# install dockstring
+RUN git clone https://github.com/dockstring/dockstring.git
+RUN python -m pip install dockstring/.
+
 RUN rm -rf /tmp/*
 
 # copy bin files and add to path
