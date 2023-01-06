@@ -73,8 +73,11 @@ RUN pip install -r requirements.txt
 
 RUN rm -rf /tmp/*
 
+# copy bin files and add to path
+WORKDIR /ubin
+COPY bin/ .
+ENV PATH=$PATH:/ubin/
+
 # create a project directory inside user home
 RUN mkdir app
 WORKDIR /app
-
-COPY bin/ bin
