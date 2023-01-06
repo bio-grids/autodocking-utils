@@ -27,10 +27,12 @@ services:
     build:
       context: autodocking
       dockerfile: Dockerfile
-    image: firesimulations/autodocking:2023.1.1
+    image: firesimulations/autodocking:2023.1.2
     container_name: autodocking
     tty: true
     stdin_open: true
+    volumes:
+      - ./autodocking/bin:/app/bin
     networks:
       - openbabel_net
   
