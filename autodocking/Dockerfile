@@ -75,6 +75,10 @@ RUN pip install -r requirements.txt
 RUN git clone https://github.com/dockstring/dockstring.git
 RUN python -m pip install dockstring/.
 
+# install AutoDockTools for pyhton3
+RUN git clone https://github.com/Valdes-Tresanco-MS/AutoDockTools_py3.git
+RUN python -m pip install AutoDockTools_py3/.
+
 RUN rm -rf /tmp/*
 
 # copy bin files and add to path
