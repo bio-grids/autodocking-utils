@@ -32,3 +32,5 @@ jobs:
           context: "{{defaultContext}}:openbabel"
           push: true
           tags: ${{env.docker_repo}}:3.1.1,${{env.docker_repo}}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
