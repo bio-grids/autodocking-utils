@@ -30,8 +30,10 @@ Autodocking, build upon miniconda3, is a set of tools for helping molecular dock
 | pdb2pqr | 2.1.1 |
 | pdbfixer | 1.8.1 |
 | fpocket | 4.0.2 |
+| openmm | 7.7.0 |
 | django | 4.1.5 |
 | django-ninja | 0.20.0 |
+| AutoDockTools_py3 | |
 
 ## Binaries
 
@@ -58,7 +60,7 @@ python manage.py startapp myapp
 ## Docker use
 
 ```docker
-FROM firesimulations/autodocking:2023.1.3
+FROM firesimulations/autodocking:2023.1.4
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
