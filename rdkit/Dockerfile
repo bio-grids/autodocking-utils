@@ -41,7 +41,7 @@ RUN apt-get install --yes --no-install-recommends --quiet $build_deps
 WORKDIR /
 
 # Arguments
-ARG RDKIT_DIR=2022_09_3
+ARG RDKIT_DIR=2024_03_1
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_DIR
 
 # Download and unzip rdkit
