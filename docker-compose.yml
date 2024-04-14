@@ -16,7 +16,7 @@ services:
     build:
       context: rdkit
       dockerfile: Dockerfile
-    image: firesimulations/rdkit:2022.09.3
+    image: firesimulations/rdkit:2024.03.1
     container_name: rdkit
     tty: true
     stdin_open: true
@@ -27,7 +27,7 @@ services:
     build:
       context: autodocking
       dockerfile: Dockerfile
-    image: firesimulations/autodocking:2023.1.4
+    image: firesimulations/autodocking:2024.4.14
     container_name: autodocking
     tty: true
     stdin_open: true
@@ -35,6 +35,10 @@ services:
       - ./autodocking/bin:/ubin
       - ./autodocking/specs.json:/tmp/specs.json
       - ./autodocking/specs.txt:/tmp/specs.txt
+    environment:
+      - COMPOSE_DOCKER_CLI_BUILD=1
+      - DOCKER_BUILDKIT=1
+      - DOCKER_DEFAULT_PLATFORM=linux/amd64,linux/arm64
     deploy:
       resources:
         reservations:
