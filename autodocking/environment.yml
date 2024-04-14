@@ -8,13 +8,9 @@ dependencies:
   - scipy
   - rdkit
   - pip:
-      - Django
-      - django-ninja
-      - django-ninja-extra
-      - django-ninja-jwt
-      - ninja-schema
       - vina
       - meeko
       - biopandas
       - py3Dmol
       - autopep8
+      - pydantic[email]
